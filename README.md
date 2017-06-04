@@ -1,17 +1,51 @@
 # Digit Recognizer
 
-[Digit Recognizer](https://www.kaggle.com/c/digit-recognizer)
+[Digit Recognizer](https://www.kaggle.com/c/digit-recognizer)，最终digi\_vgg16.py在Kaggle得分0.99071，排名23.7%
 
-# SVM
+# 经典机器学习算法
 
-**这里仅仅验证了5000个train dataset的预测结果**
+- **DigitRecognizer\_scikit.ipynb**: 使用SVM（scikit-learn），sharpen数据，经过测试，以32为临界值，可以得到最佳的预测结果
 
-- sharpen数据，经过测试，以32为临界值，可以得到最佳的预测结果
+# 卷积神经网络
 
-# CNN
+## VGG16
 
-**这里仅仅验证了2000个train dataset的预测结果，利用全部的数据预测得到了0.98886的Kaggle竞赛结果**
+[VGG16模型](https://github.com/fchollet/keras/blob/master/keras/applications/vgg16.py)
 
-- 输入数据被划分为4维(dataset size, width, height, image channel)
-- 2层卷积网络，包括ReLU Activation和Max Pooling
-- 在softmax前Dropout(0.5)
+- **digi\_vgg16.py**: **最佳结果**，云GPU服务器计算得到结果
+- **digi\_vgg16\_dropout.py**: 尝试加入一个Dropout层，不过结果变差
+
+## 自定义神经网络
+
+- **DigitRecognizer\_tensorflow.ipynb**: Low & High API
+- **DigitRecognizer\_keras.ipynb，digi\_vgg16.py**: 2个是一样的，工具不同而已，summary如下
+
+```
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+conv2d_1 (Conv2D)            (None, 28, 28, 32)        832
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 28, 28, 64)        51264
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 28, 28, 64)        0
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 28, 28, 128)       204928
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 28, 28, 256)       819456
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 28, 28, 256)       0
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 200704)            0
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 200704)            0
+_________________________________________________________________
+dense_1 (Dense)              (None, 128)               25690240
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                1290
+=================================================================
+Total params: 26,768,010
+Trainable params: 26,768,010
+Non-trainable params: 0
+_________________________________________________________________
+```
